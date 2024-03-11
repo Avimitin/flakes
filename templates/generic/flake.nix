@@ -9,8 +9,9 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, flake-utils }:
+  outputs = inputs@{ self, nixpkgs, flake-utils }:
     let
+      overlay = import ./overlay.nix;
       pkgsForSys = system: import nixpkgs { inherit system; };
       perSystem = (system:
         let
@@ -22,10 +23,13 @@
           };
 
           formatter = pkgs.nixpkgs-fmt;
+          legacyPackages = pkgs;
         });
     in
     {
       # Other system-independent attr
+      inherit inputs;
+      overlays.default = overlay;
     } //
 
     flake-utils.lib.eachDefaultSystem perSystem;
