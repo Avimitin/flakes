@@ -25,10 +25,10 @@
       legacyPackages = pkgs;
 
       devShells.default = pkgs.mkShell {
-        nativeBuildInputs = [
-          (pkgs.haskellPackages.ghcWithPackages (hsPkgs: [ hsPkgs.aeson ]))
-          pkgs.fourmolu
-          pkgs.haskell-language-server
+        nativeBuildInputs = with pkgs.haskellPackages; [
+          (ghcWithPackages (hsPkgs: [ hsPkgs.aeson ]))
+          fourmolu
+          haskell-language-server
         ];
       };
     });
